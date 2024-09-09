@@ -28,10 +28,14 @@ block content
                             +navItem('#','Manage users','users')
                             +navItem('#','Manage reviews','star')
                             +navItem('#','Manage bookings','briefcase')
+
+
+
                     //- Without API
                     //- form.form.form-user-data(action='/submit-user-data' method='POST')
+                    //- form.form.form-user-data(action='/submit-user-data' method='POST' enctype='multipart/form-data')
 
-            
+
             .user-view__content
                 .user-view__form-container
                     h2.heading-secondary.ma-bt-md Your account settings
@@ -39,7 +43,9 @@ block content
                     form.form.form-user-data
                         .form__group.form__photo-upload
                             img.form__user-photo(src=`img/users/${user.photo}`, alt='User photo')
-                            a.btn-text(href='') Choose new photo
+                            input.form__upload(type='file',accept ='image/*',id='photo',name='photo')
+                            label(for='photo') Select new photo
+
                         .form__group
                             label.form__label(for='name') Name
                             input#name.form__input(type='text', value=`${user.name}`, required, name='name')

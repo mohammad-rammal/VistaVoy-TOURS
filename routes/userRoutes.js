@@ -2,9 +2,10 @@ const userController = require('../controllers/userController.js');
 const authController = require('../controllers/authController.js');
 const express = require('express');
 const {restrictTo, protect} = require('../middlewares/protect.js');
+const {uploadUserPhoto, resizeUserPhoto} = require('../utils/uploadPhoto.js');
 const app = express();
-// File direction
 
+// File direction
 const router = express.Router();
 
 // app.use('/api/v1/users', userRouter); // mounting router
@@ -20,7 +21,7 @@ router.route('/resetPassword/:token').patch(authController.resetPassword);
 router.use(protect);
 router.route('/updateMyPassword').patch(authController.updatePassword);
 router.route('/me').get(userController.getMe, userController.getUserById);
-router.route('/updateMe').patch(userController.updateMe);
+router.route('/updateMe').patch(uploadUserPhoto, resizeUserPhoto, userController.updateMe);
 router.route('/deleteMe').delete(userController.deleteMe);
 
 // Middleware to active RESTRICT for all

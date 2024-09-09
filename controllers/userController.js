@@ -1,8 +1,8 @@
 const fs = require('fs');
+
 const catchAsync = require('../middlewares/catchAsync');
 const User = require('../models/userModel');
 const AppError = require('../utils/appError');
-
 const factory = require('./handlerFactory');
 
 // filePath = `${__dirname}/../dev-data/data/tours-simple.json`;
@@ -44,6 +44,9 @@ exports.getAllUsers = factory.getAll(User);
  * PATCH
  **********************/
 exports.updateMe = catchAsync(async (req, res, next) => {
+    // console.log(req.file);
+    // console.log(req.body);
+
     // 1) Create error if user POSTed password data
     if (req.body.password || req.body.passwordConfirm) {
         // If it does, return an error using the next function
@@ -52,6 +55,11 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
     // 2) Update user document
     const filteredBody = filterObj(req.body, 'name', 'email');
+
+    if (req.file) {
+        filteredBody.photo = req.file.filename;
+    }
+
     const updateUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {new: true, runValidators: true}).select(
         '-passwordChangedAt'
     );

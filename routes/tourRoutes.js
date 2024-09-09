@@ -5,6 +5,7 @@ const tourController = require('../controllers/tourController.js'); // router
 const reviewRouter = require('./reviewRoutes.js'); // Review Router for nested for duplicate
 const {aliasTopTours} = require('../middlewares/aliasTopTours.js');
 const {protect, restrictTo} = require('../middlewares/protect.js');
+const {uploadTourImages, resizeTourImage} = require('../utils/uploadPhoto.js');
 
 const tourRouter = express.Router(); // router not tourRouter
 
@@ -40,7 +41,7 @@ tourRouter
 tourRouter
     .route('/:id')
     .get(tourController.getTourById)
-    .patch(protect, restrictTo('admin', 'lead-guide'), tourController.updateTour)
+    .patch(protect, restrictTo('admin', 'lead-guide'), uploadTourImages, resizeTourImage, tourController.updateTour)
     .delete(protect, restrictTo('admin', 'lead-guide'), tourController.deleteTour);
 
 // // tourRouter.route('/:tourId/reviews').post(protect, restrictTo('user'), reviewController.createReview);
