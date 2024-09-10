@@ -1,5 +1,4 @@
-//- Email template adapted from https://github.com/leemunroe/responsive-html-email-template
-//- Converted from HTML using https://html2pug.now.sh/
+
 
 doctype html
 html
@@ -7,8 +6,8 @@ html
         meta(name='viewport', content='width=device-width')
         meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
         title= subject
-        include _style
 
+        include _style
     body
         table.body(role='presentation', border='0', cellpadding='0', cellspacing='0')
             tbody
@@ -27,17 +26,18 @@ html
                                                 tbody
                                                     tr
                                                         td
-                                                            // CONTENT
 
-                                                            block content
+                                                            // CONTENT
+                                                            block content 
+
                             // START FOOTER
                             .footer
                                 table(role='presentation', border='0', cellpadding='0', cellspacing='0')
                                     tbody
                                         tr
                                             td.content-block
-                                                span.apple-link Natours Inc, 123 Nowhere Road, San Francisco CA 99999
+                                                span.apple-link If this email was not requested or is not relevant to you, please ignore it.
                                                 br
-                                                |  Don't like these emails? 
-                                                a(href='#') Unsubscribe
-                    //- td  
+                                                | To contact us, click 
+                                                a(href='#') here
+//- td  

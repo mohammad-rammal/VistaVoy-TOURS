@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const catchAsync = require('../middlewares/catchAsync');
 const User = require('../models/userModel');
 const AppError = require('../utils/appError');
-const sendEmail = require('../utils/email');
+const Email = require('../utils/email');
 
 const generateToken = (id) => {
     return jwt.sign({id: id}, process.env.JWT_SECRET, {
@@ -52,6 +52,11 @@ exports.signup = catchAsync(async (req, res, next) => {
         passwordConfirm: req.body.passwordConfirm,
         passwordChangedAt: req.body.passwordChangedAt,
     });
+
+    const url = `${req.protocol}://${req.get('host')}/me`;
+    console.log(url);
+
+    await new Email(newUser, url).sendWelcome();
 
     // const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
     //     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -146,18 +151,35 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     const resetToken = user.createPasswordResetToken();
     await user.save({validateBeforeSave: false});
 
-    // 4) Send it to user's email
-    const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
-
-    const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\n If you didn't forgot your password, please ignore this email!`;
+    // const message = `
+    //     <div style="font-family: Arial, sans-serif; color: #333; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 8px;">
+    //         <h2 style="color: #2c3e50;">Forgot Your Password?</h2>
+    //         <p style="font-size: 16px; line-height: 1.6;">
+    //         No worries! 🌟 To reset your password, please submit a PATCH request with your new password and password confirmation to:
+    //         </p>
+    //         <p style="font-size: 16px; line-height: 1.6;">
+    //         <a href="${resetURL}" style="color: #3498db; text-decoration: none;">${resetURL}</a>
+    //         </p>
+    //         <p style="font-size: 16px; line-height: 1.6;">
+    //         If you didn’t request a password change, simply ignore this email. No further action is needed from your side. 😊
+    //         </p>
+    //         <p style="font-size: 14px; color: #888;">
+    //         Stay secure and have a great day!
+    //         </p>
+    //     </div>
+    //     `;
 
     try {
-        await sendEmail({
-            email: user.email,
-            subject: 'Your password reset token (valid for 10 mins)',
-            message,
-        });
+        // 4) Send it to user's email
+        const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
 
+        // await sendEmail({
+        //     email: user.email,
+        //     subject: 'Your password reset token (valid for 10 mins)',
+        //     message,
+        // });
+
+        await new Email(user, resetURL).sendPasswordReset();
         res.status(200).json({
             status: 'success',
             message: 'Token sent to email',

@@ -1,5 +1,5 @@
 const pug = require('pug');
-const htmlToText = require('html-to-text');
+const {convert} = require('html-to-text');
 const nodemailer = require('nodemailer');
 
 // new Email(user, url).sendWelcome();
@@ -14,7 +14,13 @@ module.exports = class Email {
 
     newTransport() {
         if (process.env.NODE_ENV === 'production') {
-            return 1;
+            return nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.USER_EMAIL,
+                    pass: process.env.USER_PASS,
+                },
+            });
         }
 
         return nodemailer.createTransport({
@@ -28,21 +34,19 @@ module.exports = class Email {
     }
 
     async send(template, subject) {
-        // end the actual email
-
-        // 1) Render HTML based of a pug template
+        // 1) Render HTML based on a Pug template
         const html = pug.renderFile(`${__dirname}/../views/emails/${template}.pug`, {
             firstName: this.firstName,
             url: this.url,
             subject,
         });
 
-        // 2) Define the email option
+        // 2) Define email options
         const mailOptions = {
             from: this.from,
             to: this.to,
             subject,
-            text: htmlToText.fromString(html),
+            text: convert(html, {wordwrap: 130}), // Updated htmlToText usage
             html,
         };
 
@@ -51,6 +55,10 @@ module.exports = class Email {
     }
 
     async sendWelcome() {
-        await this.send('Welcome', 'Welcome to the VistaVoy');
+        await this.send('Welcome', 'Welcome to VistaVoy');
+    }
+
+    async sendPasswordReset() {
+        await this.send('passwordReset', 'Your Password Reset Link - Valid for 10 Minutes!');
     }
 };
