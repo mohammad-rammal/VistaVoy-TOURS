@@ -11,7 +11,6 @@ module.exports = class Email {
         this.url = url;
         this.from = `Mohamad Rammal <${process.env.EMAIL_FROM}>`;
     }
-
     newTransport() {
         if (process.env.NODE_ENV === 'production') {
             return nodemailer.createTransport({
