@@ -5,12 +5,18 @@ const nodemailer = require('nodemailer');
 // new Email(user, url).sendWelcome();
 
 module.exports = class Email {
-    constructor(user, url) {
+    constructor(user, url, tourID = null) {
         this.to = user.email;
         this.firstName = user.name.split(' ')[0];
         this.url = url;
         this.from = `Mohamad Rammal <${process.env.EMAIL_FROM}>`;
+
+        // Check if tourID exists before accessing its properties
+        this.tourName = tourID ? tourID.name : null;
+        this.tourPrice = tourID ? tourID.price : null;
+        this.tourStartDates = tourID && tourID.startDates ? tourID.startDates[0] : null;
     }
+
     newTransport() {
         if (process.env.NODE_ENV === 'production') {
             return nodemailer.createTransport({
@@ -37,6 +43,9 @@ module.exports = class Email {
         const html = pug.renderFile(`${__dirname}/../views/emails/${template}.pug`, {
             firstName: this.firstName,
             url: this.url,
+            tourName: this.tourName,
+            tourPrice: this.tourPrice,
+            tourStartDates: this.tourStartDates,
             subject,
         });
 
@@ -59,5 +68,9 @@ module.exports = class Email {
 
     async sendPasswordReset() {
         await this.send('passwordReset', 'Your Password Reset Link - Valid for 10 Minutes!');
+    }
+
+    async sendPayment() {
+        await this.send('paymentDone', 'Your Payment!');
     }
 };

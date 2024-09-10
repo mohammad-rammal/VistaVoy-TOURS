@@ -1,0 +1,26 @@
+extends baseEmail
+
+block content
+
+    div(style='font-family: Arial, sans-serif; color: #333; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 8px;')
+        img(src='https://res.cloudinary.com/dftxzx2zc/image/upload/v1725911934/nwqkrxybmpy9nclomc3x.png', alt='VistaVoy', style='width: 40%; max-width: 180px; height: auto; display: block; margin: 0 auto;')
+        |
+        |
+        h2(style='color: #2c3e50;') Payment Received
+        
+        p(style='font-size: 16px; line-height: 1.6;')
+            | Thank you, #{firstName}, for your payment for the #{tourName} tour! 💰 We have received a payment of #{paymentAmount} and will process it shortly.
+        
+        p(style='font-size: 16px; line-height: 1.6;')
+            | If you have any questions, feel free to reach out to us at #{email}.
+        
+        p(style='font-size: 16px; line-height: 1.6;')
+            | Tour Information:
+        
+        ul(style='font-size: 16px; line-height: 1.6;')
+            li Tour: #{tourName}
+            li Payment Amount: #{tourPrice}
+            li Date: #{tourStartDates}
+
+        p(style='font-size: 14px; color: #888;')
+            | Stay secure and have a great day!

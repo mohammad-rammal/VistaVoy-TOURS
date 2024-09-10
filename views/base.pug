@@ -33,5 +33,13 @@ html(lang="en")
         if typeof includeLogOutScript !== 'undefined' && includeLogOutScript
             script(src='https://unpkg.com/axios/dist/axios.min.js')
             script(src='/js/logout.js') 
+        
+        if typeof includeStripeScript !== 'undefined' && includeStripeScript
+            script(src='https://js.stripe.com/v3/')
+            script(src='/js/stripe.js')
+            script(src='https://unpkg.com/axios/dist/axios.min.js')
+
+
+
 
 

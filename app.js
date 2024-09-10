@@ -12,6 +12,7 @@ const viewRouter = require('./routes/viewRoutes');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const bookingRouter = require('./routes/bookingRoutes');
 const notFoundHandler = require('./middlewares/notFoundHandler');
 const errorHandler = require('./middlewares/errorHandler');
 const sendEmail = require('./utils/email');
@@ -40,16 +41,33 @@ app.use(
     helmet.contentSecurityPolicy({
         directives: {
             defaultSrc: ["'self'"],
-            scriptSrc: ["'self'", 'https://unpkg.com'],
+            scriptSrc: ["'self'", 'https://unpkg.com', 'https://js.stripe.com'],
             styleSrc: ["'self'", 'https://unpkg.com', 'https://fonts.googleapis.com'],
             fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
             imgSrc: ["'self'", 'data:', 'https:'],
             connectSrc: ["'self'", 'http://127.0.0.1:5000'],
+            frameSrc: ["'self'", 'https://js.stripe.com'],
             objectSrc: ["'none'"],
             upgradeInsecureRequests: [],
         },
     })
 );
+
+// app.use(
+//     helmet.contentSecurityPolicy({
+//         directives: {
+//             defaultSrc: ["'self'"],
+//             scriptSrc: ["'self'", 'https://unpkg.com'],
+//             scriptSrc: ["'self'", 'https://unpkg.com', 'https://js.stripe.com'],
+//             styleSrc: ["'self'", 'https://unpkg.com', 'https://fonts.googleapis.com'],
+//             fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
+//             imgSrc: ["'self'", 'data:', 'https:'],
+//             connectSrc: ["'self'", 'http://127.0.0.1:5000'],
+//             objectSrc: ["'none'"],
+//             upgradeInsecureRequests: [],
+//         },
+//     })
+// );
 
 // Middlewares
 if (process.env.NODE_ENV === 'development') {
@@ -109,6 +127,7 @@ app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/bookings', bookingRouter);
 // app.get('/test-cookie', (req, res) => {
 //     res.cookie('test', 'cookie', {maxAge: 900000, httpOnly: true});
 //     res.send('Cookie has been set');
