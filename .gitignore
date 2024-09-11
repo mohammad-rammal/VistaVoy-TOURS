@@ -64,3 +64,4 @@ public
 COMMANDS.md
 .prettierrc
 config.env
+*.env
