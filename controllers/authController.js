@@ -36,7 +36,6 @@ const createSendToken = (user, statusCode, res) => {
     //     httpOnly: true,
     //     secure:req.secure || req.headers['x-forwarded-proto'] === 'https'
     // });
-
     // console.log('Cookie Set:', token); // Add this line for debugging
 
     user.password = undefined;
