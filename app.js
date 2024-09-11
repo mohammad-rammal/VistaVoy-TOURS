@@ -39,6 +39,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.options('*', cors());
+// app.options('/api/v1/', cors()); this route must have cors
+
 // Helmet (Security HTTP headers)
 app.use(
     helmet.contentSecurityPolicy({
