@@ -43,8 +43,5 @@
     "devDependencies": {
         "cross-env": "^7.0.3",
         "ndb": "^1.1.5"
-    },
-    "engines": {
-        "node": ">=10.0.0"
     }
 }
