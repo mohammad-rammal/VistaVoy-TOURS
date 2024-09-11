@@ -1,6 +1,6 @@
-=========================================
-            VISTAVOY - README            
-=========================================
+
+#            VISTAVOY - README            
+
 
 > A Node.js application for scalable web services.
 
