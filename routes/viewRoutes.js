@@ -11,6 +11,7 @@ router.use(isLoggedIn);
 router.get('/', bookingController.createBookingCheckout, viewController.getOverView);
 
 router.get('/login', viewController.getLoginForm);
+router.get('/sign-up', viewController.getSignUpForm);
 
 router.get('/tour/:slug', viewController.getTour);
 

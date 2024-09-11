@@ -1,0 +1,35 @@
+extends base
+
+block append head
+    - let includeSignUpScript = true
+
+
+block content
+    main.main
+        .sign-form
+            h2.heading-secondary.ma-bt-lg Sign Up
+            form.form.form--sign
+                .form__group
+                    label.form__label(for='name') Username
+                    input#name.form__input(type='name', placeholder='Your name', required)
+                    .form__input-message
+
+                .form__group.ma-bt-md
+                    label.form__label(for='email') Email address
+                    input#email.form__input(type='email', placeholder='you@example.com', required)
+                    .form__input-message
+
+                .form__group.ma-bt-md
+                    label.form__label(for='password') Password
+                    input#password.form__input(type='password', placeholder='••••••••', required, minlength='8')
+                    .form__input-message
+
+                .form__group.ma-bt-md
+                    label.form__label(for='passwordConfirm') Password Confirm
+                    input#passwordConfirm.form__input(type='password', placeholder='••••••••', required, minlength='8')
+                    .form__input-message
+                .form__group
+                    button#sign-btn.btn.btn--green Sign
+
+
+    //- script(src='/js/valid.js')

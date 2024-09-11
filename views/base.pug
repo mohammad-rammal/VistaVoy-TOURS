@@ -25,6 +25,10 @@ html(lang="en")
         if typeof includeLoginScript !== 'undefined' && includeLoginScript
             script(src='/js/login.js')
             script(src='https://unpkg.com/axios/dist/axios.min.js')
+            
+        if typeof includeSignUpScript !== 'undefined' && includeSignUpScript
+            script(src='/js/signup.js')
+            script(src='https://unpkg.com/axios/dist/axios.min.js')
 
         if typeof includeUpdatedScript !== 'undefined' && includeUpdatedScript
             script(src='https://unpkg.com/axios/dist/axios.min.js')
