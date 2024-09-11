@@ -25,6 +25,7 @@ if (process.env.NODE_ENV === 'production') {
     cookieOptions.secure = true; // Set to true for HTTPS
 }
 
+
 const createSendToken = (user, statusCode, res) => {
     const token = generateToken(user._id);
 
