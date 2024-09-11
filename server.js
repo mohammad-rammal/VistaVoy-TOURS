@@ -4,7 +4,7 @@ const uncaughtException = require('./middlewares/uncaughtException');
 
 process.on('uncaughtException', uncaughtException);
 
-dotenv.config({ path: './config.env' });
+dotenv.config({path: './config.env'});
 
 const app = require('./app');
 const connectDB = require('./connection/connectDB');
@@ -37,5 +37,12 @@ process.on('unhandledRejection', (err) => {
     console.log('UNHANDLED REJECTION! 💥 Shutting down...');
     server.close(() => {
         process.exit(1); // 0 success , 1 failure
+    });
+});
+
+process.on('SIGTERM', () => {
+    console.log('SIGTERM RECEIVED, shuting down gracefully👋');
+    server.close(() => {
+        console.log('Process terminated 💥');
     });
 });
