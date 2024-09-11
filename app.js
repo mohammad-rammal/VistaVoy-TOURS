@@ -19,6 +19,8 @@ const errorHandler = require('./middlewares/errorHandler');
 const sendEmail = require('./utils/email');
 
 const app = express();
+
+// app.enable('trust proxy') // for express heroku for secure:req.secure || req.headers['x-forwarded-proto'] === 'https' in authController to test in connection is secure
 app.use(cookieParser()); // Parser data from cookie
 
 app.set('view engine', 'pug');

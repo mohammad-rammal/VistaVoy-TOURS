@@ -16,6 +16,9 @@ const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production' ? true : false, // Secure only in production
     sameSite: 'Lax', // Helps with cross-site requests
+
+    // if(req.secure || req.headers['x-forwarded-proto'] === 'https') cookieOptions.secure = true;
+    // secure:req.secure || req.headers['x-forwarded-proto'] === 'https'
 };
 
 if (process.env.NODE_ENV === 'production') {
@@ -26,6 +29,12 @@ const createSendToken = (user, statusCode, res) => {
     const token = generateToken(user._id);
 
     res.cookie('jwt', token, cookieOptions);
+
+    // res.cookie('jwt', token, {
+    //     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+    //     httpOnly: true,
+    //     secure:req.secure || req.headers['x-forwarded-proto'] === 'https'
+    // });
 
     // console.log('Cookie Set:', token); // Add this line for debugging
 
@@ -63,6 +72,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     // });
 
     createSendToken(newUser, 201, res);
+    // createSendToken(newUser, 201, req,res);
 
     // const token = generateToken(newUser._id);
 
