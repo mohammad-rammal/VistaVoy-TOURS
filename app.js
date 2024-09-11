@@ -7,6 +7,7 @@ const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const viewRouter = require('./routes/viewRoutes');
 const tourRouter = require('./routes/tourRoutes');
@@ -100,6 +101,9 @@ app.use(
         whitelist: ['duration', 'maxGroupSize', 'difficulty', 'ratingsQuantity', 'ratingsAverage', 'price'],
     })
 );
+
+// Text compressions
+app.use(compression());
 
 // Serving static files
 // app.use(express.static(`${__dirname}/public`)); //http://127.0.0.1:5000/overview.html
