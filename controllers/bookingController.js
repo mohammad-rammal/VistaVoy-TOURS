@@ -47,7 +47,6 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
         mode: 'payment',
     });
 
-
     res.status(200).json({
         status: 'success',
         sessionId: session.id, 
