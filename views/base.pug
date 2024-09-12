@@ -8,7 +8,7 @@ html(lang="en")
         link(rel='stylesheet' href="https://fonts.googleapis.com/css?family=Lato:300,300i,700") 
         link(rel='shortcut icon' type='image/png' href='/img/favicon.png')
         title VistaVoy | #{title}
-    body
+    body(data-alert=`${alert ? alert : ''}`)
         // HEADER
         include _header
 
@@ -18,7 +18,8 @@ html(lang="en")
 
         // FOOTER 
         include _footer
-
+            script(src='/js/index.js')
+        
         if typeof includeMapScript !== 'undefined' && includeMapScript
             script(src='/js/mapbox.js')
 

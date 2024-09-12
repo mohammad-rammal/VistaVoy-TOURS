@@ -5,7 +5,7 @@ const bookingController = require('../controllers/bookingController.js');
 const {protect, isLoggedIn} = require('../middlewares/protect.js');
 
 const router = express.Router();
-
+router.use(viewController.alerts);
 router.use(isLoggedIn);
 
 // router.get('/', bookingController.createBookingCheckout, viewController.getOverView);
