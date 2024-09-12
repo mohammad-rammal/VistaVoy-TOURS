@@ -7,6 +7,7 @@ const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const bodyParser = require('body-parser');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const viewRouter = require('./routes/viewRoutes');
@@ -14,6 +15,7 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+const bookingController = require('./controllers/bookingController');
 const notFoundHandler = require('./middlewares/notFoundHandler');
 const errorHandler = require('./middlewares/errorHandler');
 const sendEmail = require('./utils/email');
@@ -89,6 +91,8 @@ const limiter = rateLimit({
 
 // Make limiter middleware effect at /api routes only
 app.use('/api', limiter);
+
+app.post('/webhook-checkout', bodyParser.raw({type: 'application/json'}), bookingController.webhookCheckout); // will receive req not json and then will go to body parser to convert to json
 
 // Apply middleware for post (body parser , reading data from body into req.body)
 app.use(express.json({limit: '10kb'}));
