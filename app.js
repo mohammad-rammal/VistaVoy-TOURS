@@ -149,5 +149,5 @@ app.use('/api/v1/bookings', bookingRouter);
 app.all('*', notFoundHandler);
 
 app.use(errorHandler);
-
+app.set('trust proxy', true);
 module.exports = app;
