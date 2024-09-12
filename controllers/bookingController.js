@@ -90,25 +90,27 @@ const createBookingCheckout = async (session) => {
     const user = (await User.findOne({email: session.customer_email})).id;
     const price = session.amount_total / 100;
 
-
     await Booking.create({tour, user, price});
 };
 
 // Will run if payment successful and to create new booking into database
-exports.webhookCheckout = (req, res, next) => {
+exports.webhookCheckout = async (req, res, next) => {
     const signature = req.headers['stripe-signature'];
     let event;
 
     try {
         event = stripe.webhooks.constructEvent(req.body, signature, process.env.STRIPE_WEBHOOK_SECRET);
     } catch (error) {
-        return res.status(400).send(`Webhook error: ${err.message}`);
+        return res.status(400).send(`Webhook error: ${error.message}`);
     }
 
     if (event.type === 'checkout.session.completed') {
-        createBookingCheckout(event.data.object);
-
-        res.status(200).json({Received: true});
+        try {
+            await createBookingCheckout(event.data.object);
+            res.status(200).json({received: true});
+        } catch (err) {
+            return next(err);
+        }
     }
 };
 

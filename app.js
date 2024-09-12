@@ -82,14 +82,26 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-//  Access 100 request for 1 ip for one hour (Deny Of Server -DOS- and brute Force Attack)
+// //  Access 100 request for 1 ip for one hour (Deny Of Server -DOS- and brute Force Attack)
+// const limiter = rateLimit({
+//     max: 100,
+//     windowMs: 60 * 60 * 1000,
+//     message: 'To many requests from this IP, please try again in an hour!',
+// });
+
+// // Make limiter middleware effect at /api routes only
+// app.use('/api', limiter);
+
 const limiter = rateLimit({
     max: 100,
     windowMs: 60 * 60 * 1000,
-    message: 'To many requests from this IP, please try again in an hour!',
+    message: 'Too many requests from this IP, please try again in an hour!',
+
+    headers: true,
+    standardHeaders: true,
+    legacyHeaders: false,
 });
 
-// Make limiter middleware effect at /api routes only
 app.use('/api', limiter);
 
 app.post('/webhook-checkout', bodyParser.raw({type: 'application/json'}), bookingController.webhookCheckout); // will receive req not json and then will go to body parser to convert to json
@@ -149,5 +161,7 @@ app.use('/api/v1/bookings', bookingRouter);
 app.all('*', notFoundHandler);
 
 app.use(errorHandler);
-app.set('trust proxy', true);
+
+app.set('trust proxy', false);
+
 module.exports = app;
